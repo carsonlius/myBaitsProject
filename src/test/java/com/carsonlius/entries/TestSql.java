@@ -1,5 +1,6 @@
 package com.carsonlius.entries;
 
+import com.carsonlius.utils.MyBaitsUtils;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -15,20 +16,10 @@ import java.util.List;
 public class TestSql {
     @Test
     public void testMyBaits() throws IOException {
-        System.out.println("hello world");
-        String config = "mybaits.xml";
-//
-//        // 读文件
-        InputStream inputStream = Resources.getResourceAsStream(config);
-//
-//        // 创建sqlSessionFactoryBuilder
-        SqlSessionFactoryBuilder sqlSessionFactoryBuilder = new SqlSessionFactoryBuilder();
-//
-//        // 创建SqlSessionFactory对象
-        SqlSessionFactory sqlSessionFactory = sqlSessionFactoryBuilder.build(inputStream);
+
 //
 //        // 获取sqlSession对象
-        SqlSession sqlSession = sqlSessionFactory.openSession();
+        SqlSession sqlSession = MyBaitsUtils.getSqlSession();
 
         // 80808
         String flagInsert = "com.carsonlius.dao.SystemLogDetailsDao.insertSystemLogDetails";

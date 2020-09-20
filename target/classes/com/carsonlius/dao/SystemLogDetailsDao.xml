@@ -5,11 +5,22 @@
 <mapper namespace="com.carsonlius.dao.SystemLogDetailsDao">
     <select id="selectSystemLogDetails" resultType="com.carsonlius.entries.SystemLogDetails">
 
-            select * from system_log_details order by rec_id desc limit 3
+
+                    select * from system_log_details  order by rec_id desc limit 3
+
 
     </select>
 
-    <insert id="insertSystemLogDetails" >
-        insert into system_log_details(remark,data, request_id) values(#{remark}, #{data}, #{request_id})
+    <insert id="insertSystemLogDetails">
+
+                insert into system_log_details(remark,data, request_id) values(#{remark}, #{data}, #{request_id})
+
     </insert>
+
+    <select id="getLogById" resultType="com.carsonlius.entries.SystemLogDetails" >
+
+                    select * from system_log_details where  rec_id = #{recId} or rec_id = #{recId2} order by rec_id  limit 1
+
+
+    </select>
 </mapper>

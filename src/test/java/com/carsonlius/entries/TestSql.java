@@ -1,12 +1,16 @@
 package com.carsonlius.entries;
 
 import com.carsonlius.dao.SystemLogDetailsDao;
+import com.carsonlius.services.SystemLogImp;
+import com.carsonlius.services.impl.SystemLogService;
 import com.carsonlius.utils.MyBaitsUtils;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,17 +22,39 @@ public class TestSql {
 
     @Test
     public void testSelect() {
-        SqlSession sqlSession = MyBaitsUtils.getSqlSession();
-        SystemLogDetailsDao systemLogDetailsDao = sqlSession.getMapper(SystemLogDetailsDao.class);
-        System.out.println(systemLogDetailsDao.getClass().getName()  + " -------");
 
+        String config = "applicationContext.xml";
+        ApplicationContext ctx = new ClassPathXmlApplicationContext(config);
+
+        String[] names = ctx.getBeanDefinitionNames();
+        for (String name : names) {
+            System.out.println("容器对象  ======》" + name + " ---》" + ctx.getBean(name).getClass().getName());
+        }
+
+        SystemLogDetailsDao systemLogDetailsDao = (SystemLogDetailsDao) ctx.getBean("systemLogDetailsDao");
         SystemLogDetails systemLogDetails2 = systemLogDetailsDao.getLogById(1, 2);
+        System.out.println(systemLogDetails2);
 
-//        for (SystemLogDetails systemLogDetail : systemLogDetails2) {
-            System.out.println(systemLogDetails2);
-//        }
 
-        sqlSession.close();
+        SystemLogService systemLogService = (SystemLogService)ctx.getBean("SystemLogService");
+        SystemLogDetails systemLogDetails3= systemLogService.selectLogs();
+
+        System.out.println(systemLogDetails3);
+
+
+
+
+//        SqlSession sqlSession = MyBaitsUtils.getSqlSession();
+//        SystemLogDetailsDao systemLogDetailsDao = sqlSession.getMapper(SystemLogDetailsDao.class);
+//        System.out.println(systemLogDetailsDao.getClass().getName()  + " -------");
+//
+//        SystemLogDetails systemLogDetails2 = systemLogDetailsDao.getLogById(1, 2);
+//
+////        for (SystemLogDetails systemLogDetail : systemLogDetails2) {
+//            System.out.println(systemLogDetails2);
+////        }
+//
+//        sqlSession.close();
     }
 
     @Test

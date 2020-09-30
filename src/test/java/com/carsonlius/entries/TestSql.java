@@ -1,5 +1,6 @@
 package com.carsonlius.entries;
 
+import com.carsonlius.dao.SystemLogDetailsDao;
 import com.carsonlius.utils.MyBaitsUtils;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -14,6 +15,22 @@ import java.util.Date;
 import java.util.List;
 
 public class TestSql {
+
+    @Test
+    public void testSelect() {
+        SqlSession sqlSession = MyBaitsUtils.getSqlSession();
+        SystemLogDetailsDao systemLogDetailsDao = sqlSession.getMapper(SystemLogDetailsDao.class);
+        System.out.println(systemLogDetailsDao.getClass().getName()  + " -------");
+
+        SystemLogDetails systemLogDetails2 = systemLogDetailsDao.getLogById(1, 2);
+
+//        for (SystemLogDetails systemLogDetail : systemLogDetails2) {
+            System.out.println(systemLogDetails2);
+//        }
+
+        sqlSession.close();
+    }
+
     @Test
     public void testMyBaits() throws IOException {
 
@@ -36,14 +53,13 @@ public class TestSql {
 
         int insertNumbers = sqlSession.insert(flagInsert, systemLogDetails);
 
-        System.out.println( "insertNumbers=" + insertNumbers);
+        System.out.println("insertNumbers=" + insertNumbers);
 //
 //        // 执行执行语句的标示
         String flagSelect = "com.carsonlius.dao.SystemLogDetailsDao.selectSystemLogDetails";
 //
 //        // 执行
         List<SystemLogDetails> systemLogDetails2 = sqlSession.selectList(flagSelect);
-
 
 
         for (SystemLogDetails systemLogDetail : systemLogDetails2) {

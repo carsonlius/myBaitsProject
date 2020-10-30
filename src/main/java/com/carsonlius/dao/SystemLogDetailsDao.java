@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface SystemLogDetailsDao {
-    public List<SystemLogDetails> selectSystemLogDetails();
+    public SystemLogDetails selectSystemLogDetails();
 
     public int insertSystemLogDetails(SystemLogDetails systemLogDetails);
 

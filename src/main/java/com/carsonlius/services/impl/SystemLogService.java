@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface SystemLogService {
     SystemLogDetails selectLogs();
+
+    void insertLog();
 }

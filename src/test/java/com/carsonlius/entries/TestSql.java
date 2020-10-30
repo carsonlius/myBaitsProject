@@ -1,16 +1,17 @@
 package com.carsonlius.entries;
 
 import com.carsonlius.dao.SystemLogDetailsDao;
-import com.carsonlius.services.SystemLogImp;
+import com.carsonlius.exceptions.ParamsErrorException;
+import com.carsonlius.services.SystemLogImpl;
 import com.carsonlius.services.impl.SystemLogService;
 import com.carsonlius.utils.MyBaitsUtils;
-import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.junit.Test;
+import org.junit.experimental.theories.suppliers.TestedOn;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,6 +20,16 @@ import java.util.Date;
 import java.util.List;
 
 public class TestSql {
+
+    @Test
+    public void testInsertTransaction()
+    {
+        String config = "applicationContext.xml";
+        ApplicationContext ctx = new ClassPathXmlApplicationContext(config);
+        SystemLogService systemLogImpl = (SystemLogService) ctx.getBean("systemLogImpl");
+        systemLogImpl.insertLog();
+        System.out.println("插入成功");
+    }
 
     @Test
     public void testSelect() {
@@ -34,9 +45,7 @@ public class TestSql {
         SystemLogDetailsDao systemLogDetailsDao = (SystemLogDetailsDao) ctx.getBean("systemLogDetailsDao");
         SystemLogDetails systemLogDetails2 = systemLogDetailsDao.getLogById(1, 2);
         System.out.println(systemLogDetails2);
-
-
-        SystemLogService systemLogService = (SystemLogService)ctx.getBean("SystemLogService");
+        SystemLogService systemLogService = (SystemLogService)ctx.getBean("systemLogImpl");
         SystemLogDetails systemLogDetails3= systemLogService.selectLogs();
 
         System.out.println(systemLogDetails3);
